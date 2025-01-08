@@ -18,16 +18,16 @@
                 </a-entity>
 
                 <a-entity light="type: directional; color: #fdfbe2; intensity: 2.0; castShadow: true;" 
-                shadowCameraLeft="-10" 
-                shadowCameraRight="10" 
-                shadowCameraTop="10" 
-                shadowCameraBottom="-10" 
+                shadowCameraLeft="-5" 
+                shadowCameraRight="5" 
+                shadowCameraTop="5" 
+                shadowCameraBottom="-5" 
                 shadowMapWidth="2048" 
                 shadowMapHeight="2048"
                 position="20 40 50"></a-entity>
                 <a-entity light="type: hemisphere; color: #508bb4; groundColor: #506548; intensity: 2.0"></a-entity>
-                <a-circle id="ground" radius="10" position="0 0.1 0" rotation="-90 0 0" material="src: tiling.jpg; repeat: 30 30; side: double; roughness: 1.0;"></a-circle>
-                <a-circle id="ground" radius="10" color="gray" position="0 0.1 0" rotation="-90 0 0" material="transparent: true; opacity: 0.8" shadow="receive: true"></a-circle>
+                <a-circle id="ground" radius="5" position="0 0.1 0" rotation="-90 0 0" material="src: tiling.jpg; repeat: 20 20; side: double; roughness: 1.0;"></a-circle>
+                <a-circle id="ground" radius="5" color="#2f0f06" position="0 0.1 0" rotation="-90 0 0" material="transparent: true; opacity: 0.8" shadow="receive: true"></a-circle>
 
             </a-marker>
             <a-entity camera></a-entity>
