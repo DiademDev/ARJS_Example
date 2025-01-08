@@ -1,74 +1,66 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>FBX Import and Animation</title>
+        <title>GLTF Import and Animation</title>
         <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-        <!-- Include FFLate library -->
-        <script src="https://cdn.jsdelivr.net/npm/three@0.143.0/examples/js/libs/fflate.min.js"></script>
-        <!-- Include FBXLoader -->
-        <script src="https://cdn.jsdelivr.net/npm/three@0.143.0/examples/js/loaders/FBXLoader.js"></script>
     </head>
     <body>
         <a-scene embedded arjs>
             <a-marker preset="hiro" id="marker">
-                <!-- Placeholder entity where FBX will load -->
-                <a-entity id="fbxEntity" position="0 0.5 0" rotation="-90 0 0" scale="1 1 1"></a-entity>
+                <!-- Import GLTF model -->
+                <a-entity 
+                    gltf-model="Dying.glb"
+                    id="gltfEntity"
+                    position="0 0.5 0"
+                    scale="1 1 1">
+                </a-entity>
             </a-marker>
             <a-entity camera></a-entity>
         </a-scene>
 
         <script>
-            // Reference the placeholder entity
-            const fbxEntity = document.getElementById('fbxEntity');
+            const gltfEntity = document.getElementById('gltfEntity');
             const marker = document.getElementById('marker');
-            
+
             let mixer; // Animation mixer
-            let clock = new THREE.Clock(); // For updating animations
+            let clock = new THREE.Clock();
 
-            // Load FBX file using THREE.js FBXLoader
-            const loader = new THREE.FBXLoader();
-            loader.load('Dying.fbx', (fbx) => {
-                // Scale and add FBX to A-Frame
-                fbx.scale.set(0.01, 0.01, 0.01); // Adjust scale as needed
-                fbx.traverse((child) => {
-                    if (child.isMesh) {
-                        child.castShadow = true;
-                        child.receiveShadow = true;
-                    }
-                });
+            // Handle GLTF loaded event to initialize animations
+            gltfEntity.addEventListener('model-loaded', (event) => {
+                const gltf = event.detail.model; // Get the loaded GLTF scene
+                console.log('GLTF Loaded:', gltf);
 
-                // Add FBX to the placeholder entity
-                fbxEntity.object3D.add(fbx);
+                // Check if animations exist
+                if (gltf.animations && gltf.animations.length > 0) {
+                    const model = gltfEntity.getObject3D('mesh'); // Access the 3D model
+                    mixer = new THREE.AnimationMixer(model);
 
-                // Set up animation mixer
-                if (fbx.animations && fbx.animations.length > 0) {
-                    mixer = new THREE.AnimationMixer(fbx);
-                    const action = mixer.clipAction(fbx.animations[0]);
+                    // Play the first animation
+                    const action = mixer.clipAction(gltf.animations[0]);
                     action.play();
                 } else {
-                    console.warn('No animations detected. Attempting to load skeleton or fallback.');
-                    // You can manually debug skeleton structure or adjust playback
+                    console.warn('No animations found in the GLTF model.');
                 }
             });
 
-            // Listen for marker detection and update animations
+            // Start/stop animations based on marker detection
             marker.addEventListener('markerFound', () => {
                 console.log('Marker detected!');
                 if (mixer) {
-                    mixer.timeScale = 1; // Resume animation playback
+                    mixer.timeScale = 1; // Resume animation
                 }
             });
 
             marker.addEventListener('markerLost', () => {
                 console.log('Marker lost!');
                 if (mixer) {
-                    mixer.timeScale = 0; // Pause animation playback
+                    mixer.timeScale = 0; // Pause animation
                 }
             });
 
-            // Update animations in the render loop
-            AFRAME.registerComponent('animate-fbx', {
+            // Update the animation mixer in the A-Frame render loop
+            AFRAME.registerComponent('animate-gltf', {
                 tick: function () {
                     if (mixer) {
                         const delta = clock.getDelta();
@@ -78,7 +70,7 @@
             });
 
             // Attach the animation update component to the scene
-            document.querySelector('a-scene').setAttribute('animate-fbx', '');
+            document.querySelector('a-scene').setAttribute('animate-gltf', '');
         </script>
     </body>
 </html>
