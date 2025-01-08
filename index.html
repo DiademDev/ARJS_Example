@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Consistent Animation Speed</title>
+        <title>Consistent Object Rotation</title>
         <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
     </head>
@@ -16,14 +16,16 @@
             </a-assets>
 
             <a-marker preset="hiro">
-                <!-- Animated rotating model -->
-                <a-entity 
-                    gltf-model="#text" 
-                    class="clickable" 
-                    position="0 0.5 0" 
-                    rotation="0 0 0"
-                    id="animatedBox"
-                    animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear;">
+                <!-- Parent entity to control consistent rotation -->
+                <a-entity id="parentEntity" position="0 0.5 0">
+                    <!-- Animated rotating model -->
+                    <a-entity 
+                        gltf-model="#text" 
+                        class="clickable" 
+                        position="0 0 0"
+                        id="animatedBox"
+                        animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear;">
+                    </a-entity>
                 </a-entity>
             </a-marker>
 
@@ -33,6 +35,7 @@
         <script>
             // Select the animated entity
             const animatedBox = document.querySelector('#animatedBox');
+            const parentEntity = document.querySelector('#parentEntity');
             let isAnimating = true; // Track animation state
 
             // Add click event listener to toggle animation
@@ -47,6 +50,12 @@
                     animatedBox.setAttribute('animation__rotate', 'enabled', true);
                 }
                 isAnimating = !isAnimating;
+            });
+
+            // Optional: Listen for orientation changes and adjust the parent entity's rotation
+            window.addEventListener('orientationchange', () => {
+                // You can modify the rotation here if needed, for example:
+                parentEntity.setAttribute('rotation', '0 0 0');
             });
         </script>
     </body>
