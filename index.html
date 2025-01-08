@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Animating a Box with Click-to-Stop</title>
+        <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    </head>
+    <body>
+        <a-scene embedded arjs>
+            <!-- Enable cursor for click detection -->
+            <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
+            
+            <!-- Load scene assets -->
+            <a-assets>
+                <a-asset-item id="text" src="Text.glb"></a-asset-item>
+            </a-assets>
+
+            <a-marker preset="hiro">
+                <!-- Animated rotating box -->
+                <a-entity gltf-model="#text" class="clickable" position="0 0.5 0"  rotation="0 0 0"
+                       animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear;"
+                       id="animatedBox">
+                </a-entity>
+            </a-marker>
+
+            <a-entity camera></a-entity>
+        </a-scene>
+
+        <script>
+            // Select the box
+            const box = document.querySelector('#animatedBox');
+
+            // Add a click event listener to toggle animation
+            box.addEventListener('click', () => {
+                const animation = box.getAttribute('animation');
+                // Toggle the animation's "enabled" property
+                if (animation.enabled) {
+                    box.setAttribute('animation', 'enabled', false);
+                } else {
+                    box.setAttribute('animation', 'enabled', true);
+                }
+            });
+        </script>
+    </body>
+</html>
