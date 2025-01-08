@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Animating a Box with Click-to-Stop</title>
+        <title>Consistent Animation Speed</title>
         <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
     </head>
@@ -16,10 +16,14 @@
             </a-assets>
 
             <a-marker preset="hiro">
-                <!-- Animated rotating box -->
-                <a-entity gltf-model="#text" class="clickable" position="0 0.5 0"  rotation="0 0 0"
-                       animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear;"
-                       id="animatedBox">
+                <!-- Animated rotating model -->
+                <a-entity 
+                    gltf-model="#text" 
+                    class="clickable" 
+                    position="0 0.5 0" 
+                    rotation="0 0 0"
+                    id="animatedBox"
+                    animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear;">
                 </a-entity>
             </a-marker>
 
@@ -27,18 +31,22 @@
         </a-scene>
 
         <script>
-            // Select the box
-            const box = document.querySelector('#animatedBox');
+            // Select the animated entity
+            const animatedBox = document.querySelector('#animatedBox');
+            let isAnimating = true; // Track animation state
 
-            // Add a click event listener to toggle animation
-            box.addEventListener('click', () => {
-                const animation = box.getAttribute('animation');
-                // Toggle the animation's "enabled" property
-                if (animation.enabled) {
-                    box.setAttribute('animation', 'enabled', false);
+            // Add click event listener to toggle animation
+            animatedBox.addEventListener('click', () => {
+                if (isAnimating) {
+                    // Stop the animation by setting enabled: false and reset the rotation
+                    animatedBox.setAttribute('animation__rotate', 'enabled', false);
+                    // Reset the rotation to the initial state (0 0 0)
+                    animatedBox.setAttribute('rotation', '0 0 0');
                 } else {
-                    box.setAttribute('animation', 'enabled', true);
+                    // Restart the animation with the same configuration
+                    animatedBox.setAttribute('animation__rotate', 'enabled', true);
                 }
+                isAnimating = !isAnimating;
             });
         </script>
     </body>
