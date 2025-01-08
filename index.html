@@ -14,20 +14,20 @@
                     id="gltfEntity"
                     position="0 0.1 0"
                     shadow="cast:"
-                    scale="0.5 0.5 0.5">
+                    scale="0.75 0.75 0.75">
                 </a-entity>
 
                 <a-entity light="type: directional; color: #fdfbe2; intensity: 3.0; castShadow: true;" 
-                shadowCameraLeft="-6" 
-                shadowCameraRight="6" 
-                shadowCameraTop="6" 
-                shadowCameraBottom="-6" 
+                shadowCameraLeft="-4" 
+                shadowCameraRight="4" 
+                shadowCameraTop="4" 
+                shadowCameraBottom="-4" 
                 shadowMapWidth="2048" 
                 shadowMapHeight="2048"
                 position="20 40 50"></a-entity>
                 <a-entity light="type: hemisphere; color: #508bb4; groundColor: #506548; intensity: 2.0"></a-entity>
-                <a-circle id="ground" radius="3" position="0 0.1 0" rotation="-90 0 0" material="src: tiling.jpg; repeat: 20 20; side: double; roughness: 1.0;"></a-circle>
-                <a-circle id="ground" radius="3" color="#130704" position="0 0.1 0" rotation="-90 0 0" material="transparent: true; opacity: 0.8" shadow="receive: true"></a-circle>
+                <a-circle id="ground" radius="2" position="0 0.1 0" rotation="-90 0 0" material="src: tiling.jpg; repeat: 10 10; side: double; roughness: 1.0;"></a-circle>
+                <a-circle id="ground" radius="2" color="#130704" position="0 0.1 0" rotation="-90 0 0" material="transparent: true; opacity: 0.8" shadow="receive: true"></a-circle>
 
             </a-marker>
             <a-entity camera></a-entity>
