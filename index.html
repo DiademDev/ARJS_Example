@@ -8,6 +8,7 @@
     <body>
         <a-scene embedded arjs shadow="type: pcfsoft">
             <a-marker preset="hiro" id="marker">
+
                 <!-- Import GLTF model -->
                 <a-entity 
                     gltf-model="Dying.glb"
@@ -25,12 +26,20 @@
                 shadowMapWidth="2048" 
                 shadowMapHeight="2048"
                 position="20 40 50"></a-entity>
-                <a-entity light="type: hemisphere; color: #508bb4; groundColor: #506548; intensity: 2.0"></a-entity>
+                
+                <a-light type="hemisphere" color="#508bb4" groundColor=#506548; intensity="1.0"></a-entity>
+                
+                <!-- Ground plane and shadow catcher -->
                 <a-circle id="ground" radius="2" position="0 0.1 0" rotation="-90 0 0" material="src: tiling.jpg; repeat: 10 10; side: double; roughness: 1.0;"></a-circle>
-                <a-circle id="ground" radius="2" color="#130704" position="0 0.1 0" rotation="-90 0 0" material="transparent: true; opacity: 0.8" shadow="receive: true"></a-circle>
+                <a-circle id="groundShadow" radius="2" color="#130704" position="0 0.1 0" rotation="-90 0 0" material="transparent: true; opacity: 0.8" shadow="receive: true"></a-circle>
+
+                <!-- Animate text -->
+                <a-text id="text" value="Hello World!" position="-10 1.5 -0.5" color="white" width="6" opacity="0" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" 
+                animation__slide="property: position; to: -1.0 1.5 -0.5; dur: 5000; easing: easeOutCubic"
+                animation__fade="property: opacity; to: 1; dur: 5000; delay: 500; easing: easeOutCubic"></a-text>
 
             </a-marker>
-            <a-entity camera></a-entity>
+            <a-camera position="0 .1 3"></a-camera>
         </a-scene>
 
         <script>
