@@ -22,8 +22,16 @@
                     <!-- Import GLTF model -->
                     <a-entity 
                         gltf-model="Dying.glb"
-                        id="gltfEntity"
+                        id="gltfEntity1"
                         position="0 0.1 0"
+                        shadow="cast: true"
+                        scale="0.75 0.75 0.75">
+                    </a-entity>
+
+                    <a-entity 
+                        gltf-model="shooting.glb"
+                        id="gltfEntity2"
+                        position="-2 0.1 0"
                         shadow="cast: true"
                         scale="0.75 0.75 0.75">
                     </a-entity>
@@ -114,58 +122,67 @@
         </a-scene>
 
         <script>
-            const gltfEntity = document.getElementById('gltfEntity');
+            const gltfEntity1 = document.getElementById('gltfEntity1');
+            const gltfEntity2 = document.getElementById('gltfEntity2'); // Add the second entity
             const marker = document.getElementById('marker');
-
-            let mixer; // Animation mixer
+        
+            let mixers = []; // Array to store multiple animation mixers
             let clock = new THREE.Clock();
-
-            // Handle GLTF loaded event to initialize animations
-            gltfEntity.addEventListener('model-loaded', (event) => {
-                const gltf = event.detail.model; // Get the loaded GLTF scene
-                console.log('GLTF Loaded:', gltf);
-
-                // Check if animations exist
-                if (gltf.animations && gltf.animations.length > 0) {
-                    const model = gltfEntity.getObject3D('mesh'); // Access the 3D model
-                    mixer = new THREE.AnimationMixer(model);
-
-                    // Play the first animation
-                    const action = mixer.clipAction(gltf.animations[0]);
-                    action.play();
-                } else {
-                    console.warn('No animations found in the GLTF model.');
-                }
-            });
-
+        
+            // Function to initialize animations for a GLTF entity
+            function initializeAnimation(entity, mixerArray) {
+                entity.addEventListener('model-loaded', (event) => {
+                    const gltf = event.detail.model; // Get the loaded GLTF scene
+                    console.log(`GLTF Loaded for ${entity.id}:`, gltf);
+        
+                    // Check if animations exist
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        const model = entity.getObject3D('mesh'); // Access the 3D model
+                        const mixer = new THREE.AnimationMixer(model);
+                        mixerArray.push(mixer); // Add mixer to the array
+        
+                        // Play the first animation
+                        const action = mixer.clipAction(gltf.animations[0]);
+                        action.play();
+                    } else {
+                        console.warn(`No animations found in the GLTF model for ${entity.id}.`);
+                    }
+                });
+            }
+        
+            // Initialize animations for both entities
+            initializeAnimation(gltfEntity1, mixers);
+            initializeAnimation(gltfEntity2, mixers);
+        
             // Start/stop animations based on marker detection
             marker.addEventListener('markerFound', () => {
                 console.log('Marker detected!');
-                if (mixer) {
-                    mixer.timeScale = 1; // Resume animation
-                }
+                mixers.forEach((mixer) => {
+                    mixer.timeScale = 1; // Resume animations
+                });
             });
-
+        
             marker.addEventListener('markerLost', () => {
                 console.log('Marker lost!');
-                if (mixer) {
-                    mixer.timeScale = 0; // Pause animation
-                }
+                mixers.forEach((mixer) => {
+                    mixer.timeScale = 0; // Pause animations
+                });
             });
-
-            // Update the animation mixer in the A-Frame render loop
+        
+            // Update the animation mixers in the A-Frame render loop
             AFRAME.registerComponent('animate-gltf', {
                 tick: function () {
-                    if (mixer) {
-                        const delta = clock.getDelta();
+                    const delta = clock.getDelta();
+                    mixers.forEach((mixer) => {
                         mixer.update(delta);
-                    }
+                    });
                 },
             });
-
+        
             // Attach the animation update component to the scene
             document.querySelector('a-scene').setAttribute('animate-gltf', '');
         </script>
+        
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
