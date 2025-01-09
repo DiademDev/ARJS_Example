@@ -7,11 +7,18 @@
     </head>
     <body>
         <a-scene embedded arjs shadow="type: pcfsoft">
+
+            <!-- Define the video asset -->
+            <a-assets>
+                <video 
+                    id="sampleVideo" autoplay loop muted src="ForestPeople-ezgif.mp4">
+                </video>
+            </a-assets>
             
             <a-marker preset="hiro" id="marker">
 
                 <a-entity id="sceneGroup" rotation="-90 0 0">
-
+                      
                     <!-- Import GLTF model -->
                     <a-entity 
                         gltf-model="Dying.glb"
@@ -19,6 +26,15 @@
                         position="0 0.1 0"
                         shadow="cast: true"
                         scale="0.75 0.75 0.75">
+                    </a-entity>
+
+                    <a-entity 
+                        gltf-model="tele.glb"
+                        id="gltfEntityTele"
+                        position="1 0.1 0"
+                        shadow="cast: true"
+                        rotation="0 0 0"
+                        scale="0.008 0.008 0.008">
                     </a-entity>
 
                     <a-entity light="type: directional; color: #fdfbe2; intensity: 3.0; castShadow: true;" 
@@ -30,7 +46,7 @@
                         shadowMapHeight="2048"
                         position="20 40 50">
                     </a-entity>
-                    
+
                     <a-light 
                         type="hemisphere" 
                         color="#508bb4" 
@@ -68,6 +84,16 @@
                         animation__slide="property: position; to: -1.0 1.5 -0.5; dur: 5000; easing: easeOutCubic"
                         animation__fade="property: opacity; to: 1; dur: 5000; delay: 500; easing: easeOutCubic">
                     </a-text>
+
+                    <!-- Plane to display video -->
+                    <a-plane 
+                        src="#sampleVideo" 
+                        position="0.95 0.55 0.25" 
+                        rotation="0 0 0" 
+                        width="0.65" 
+                        height="0.50"
+                        material="shader: flat">
+                    </a-plane>
 
                 </a-entity>    
 
