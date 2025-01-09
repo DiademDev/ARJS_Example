@@ -8,12 +8,6 @@
     <body>
         <a-scene embedded arjs shadow="type: pcfsoft">
 
-            <!-- Define the video asset -->
-            <a-assets>
-                <video 
-                    id="sampleVideo" autoplay loop muted playsinline src="ForestPeople-ezgif.mp4">
-                </video>
-            </a-assets>
             
             <a-marker preset="hiro" id="marker">
 
@@ -93,16 +87,6 @@
                         material="shader: flat">
                     </a-plane>
 
-                    <!-- Plane to display video -->
-                    <a-plane 
-                        src="#sampleVideo" 
-                        position="0.95 0.55 0.25" 
-                        rotation="0 0 0" 
-                        width="0.65" 
-                        height="0.50"
-                        material="shader: flat">
-                    </a-plane>
-
                 </a-entity>    
 
             </a-marker>
@@ -165,20 +149,6 @@
 
             // Attach the animation update component to the scene
             document.querySelector('a-scene').setAttribute('animate-gltf', '');
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const video = document.querySelector('#sampleVideo');
-                video.play().catch(() => {
-                    console.log('Autoplay failed, waiting for user interaction.');
-                    const playOnUserInteraction = () => {
-                    video.play();
-                    document.removeEventListener('click', playOnUserInteraction);
-                    };
-                    document.addEventListener('click', playOnUserInteraction);
-                });
-            });
         </script>
         
     </body>
