@@ -158,5 +158,20 @@
             // Attach the animation update component to the scene
             document.querySelector('a-scene').setAttribute('animate-gltf', '');
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+            const video = document.querySelector('#sampleVideo');
+            video.play().catch(() => {
+                console.log('Autoplay failed, waiting for user interaction.');
+                const playOnUserInteraction = () => {
+                video.play();
+                document.removeEventListener('click', playOnUserInteraction);
+                };
+                document.addEventListener('click', playOnUserInteraction);
+            });
+            });
+        </script>
+        
     </body>
 </html>
