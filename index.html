@@ -11,13 +11,13 @@
             <!-- Define the video asset -->
             <a-assets>
                 <video 
-                    id="sampleVideo" autoplay loop muted src="ForestPeople-ezgif.mp4">
+                    id="sampleVideo" autoplay loop muted playsinline src="ForestPeople-ezgif.mp4">
                 </video>
             </a-assets>
             
             <a-marker preset="hiro" id="marker">
 
-                <a-entity id="sceneGroup" rotation="-90 0 0">
+                <a-entity id="sceneGroup" position="0 0 1" rotation="-90 0 0">
                       
                     <!-- Import GLTF model -->
                     <a-entity 
@@ -77,13 +77,21 @@
                         id="text" 
                         value="Hello World!" 
                         position="-10 1.5 -0.5" 
-                        color="white" 
+                        color="black" 
                         width="6" 
                         opacity="0" 
                         font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" 
                         animation__slide="property: position; to: -1.0 1.5 -0.5; dur: 5000; easing: easeOutCubic"
-                        animation__fade="property: opacity; to: 1; dur: 5000; delay: 500; easing: easeOutCubic">
+                        animation__fade="property: opacity; to: 1; dur: 3000; delay: 500; easing: easeOutCubic">
                     </a-text>
+
+                    <a-plane 
+                        position="0 1.5 -3" 
+                        rotation="0 0 0" 
+                        width="5" 
+                        height="3.5"
+                        material="shader: flat">
+                    </a-plane>
 
                     <!-- Plane to display video -->
                     <a-plane 
@@ -161,15 +169,15 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-            const video = document.querySelector('#sampleVideo');
-            video.play().catch(() => {
-                console.log('Autoplay failed, waiting for user interaction.');
-                const playOnUserInteraction = () => {
-                video.play();
-                document.removeEventListener('click', playOnUserInteraction);
-                };
-                document.addEventListener('click', playOnUserInteraction);
-            });
+                const video = document.querySelector('#sampleVideo');
+                video.play().catch(() => {
+                    console.log('Autoplay failed, waiting for user interaction.');
+                    const playOnUserInteraction = () => {
+                    video.play();
+                    document.removeEventListener('click', playOnUserInteraction);
+                    };
+                    document.addEventListener('click', playOnUserInteraction);
+                });
             });
         </script>
         
